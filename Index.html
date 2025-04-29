@@ -1,1 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trusted Color Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #1f1f1f;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .buttons button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      color: white;
+    }
+    button:nth-child(1) { background: red; }
+    button:nth-child(2) { background: green; }
+    button:nth-child(3) { background: violet; }
+    button:nth-child(4) { background: orange; }
+    button:nth-child(5) { background: blue; }
+    input {
+      padding: 10px;
+      margin-top: 15px;
+      width: 80%;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .balance {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
 
+  <div class="container">
+    <h1>Trusted Color Game</h1>
+    <div class="balance">
+      Balance: ৳<span id="balance">1000</span>
+    </div>
+    <div class="game-section">
+      <h2>Select Your Prediction</h2>
+      <div class="buttons">
+        <button onclick="predict('Red')">Red</button>
+        <button onclick="predict('Green')">Green</button>
+        <button onclick="predict('Violet')">Violet</button>
+        <button onclick="predict('Big')">Big</button>
+        <button onclick="predict('Small')">Small</button>
+      </div>
+      <input type="number" id="betAmount" placeholder="Enter Bet Amount" />
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <script>
+    let balance = 1000;
+
+    function predict(choice) {
+      const bet = parseInt(document.getElementById("betAmount").value);
+      if (!bet || bet < 10) {
+        alert("Minimum bet amount is 10");
+        return;
+      }
+      if (bet > balance) {
+        alert("Not enough balance!");
+        return;
+      }
+
+      const outcomes = ["Red", "Green", "Violet", "Big", "Small"];
+      const result = outcomes[Math.floor(Math.random() * outcomes.length)];
+
+      let resultText = `You chose: ${choice} | Result: ${result}`;
+
+      if (choice === result) {
+        const winAmount = result === "Violet" ? bet * 7 : bet * 0.98;
+        balance += winAmount;
+        resultText += ` | You Win! +৳${winAmount.toFixed(2)}`;
+      } else {
+        balance -= bet;
+        resultText += ` | You Lost! -৳${bet}`;
+      }
+
+      document.getElementById("balance").innerText = balance.toFixed(2);
+      document.getElementById("result").innerText = resultText;
+    }
+  </script>
+
+</body>
+</html>
